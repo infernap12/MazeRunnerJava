@@ -1,25 +1,64 @@
 package maze;
 
+import util.SerializationUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
+
 public class Main {
+    static UserInputHandler userInput = new UserInputHandler();
+    static Maze maze;
+
     public static void main(String[] args) {
-        UserInputHandler userInput = new UserInputHandler();
-        Maze maze = new Maze(userInput.askDimensions());
-        maze.print();
 
-
-        //init a basic array
-        //with a static maze
-        //create methods to conver that to print object
-    }
-
-    public static String get2DArrayPrint(boolean[][] matrix) {
-        StringBuilder output = new StringBuilder(new String());
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                output.append(matrix[i][j] ? "  " : "\u2588\u2588");
+        while (true) {
+            CommandType cmd;
+            try {
+                cmd = userInput.askMenu();
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+                continue;
             }
-            output.append("\n");
+            switch (cmd) {
+                case EXIT -> {
+                    System.out.println("Bye!");
+                    System.exit(0);
+                }
+                case GENERATE -> {
+                    maze = new Maze(userInput.askDimension());
+                    maze.print(false);
+                }
+                case LOAD -> {
+                    String fileName = userInput.askFileName();
+                    load(fileName);
+                }
+                case SAVE -> {
+                    String fileName = userInput.askFileName();
+                    try {
+                        SerializationUtils.serialize(maze, fileName);
+                    } catch (IOException e) {
+                        System.out.printf("Failed to save the maze to file %s%n", fileName);
+                    }
+                }
+                case DISPLAY -> maze.print(false);
+                case FIND -> {
+                    maze.print(true);
+                }
+            }
+            System.out.println();
         }
-        return output.toString();
     }
+
+    private static void load(String fileName) {
+        try {
+            maze = (Maze) SerializationUtils.deserialize(fileName);
+        } catch (IOException e) {
+            System.out.printf("The file %s does not exist%n", fileName);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Cannot load the maze. It has an invalid format.");
+        }
+    }
+
 }

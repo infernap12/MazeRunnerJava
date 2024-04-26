@@ -1,13 +1,29 @@
 package maze;
 
-public class Edge {
-    boolean isPassage;
-    Node source;
+import java.io.Serializable;
+
+public class Edge implements Serializable {
+    Node node;
     int[] offset;
 
-    public Edge(Node source, int[] offset) {
-        this.isPassage = true;
-        this.source = source;
+    public Edge(Node node, int[] offset) {
+        this.node = node;
         this.offset = offset;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Edge{");
+        sb.append("node=").append(node);
+        sb.append(", offset=");
+        if (offset == null) sb.append("null");
+        else {
+            sb.append('[');
+            for (int i = 0; i < offset.length; ++i)
+                sb.append(i == 0 ? "" : ", ").append(offset[i]);
+            sb.append(']');
+        }
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -4,19 +4,15 @@ import java.io.Serializable;
 import java.util.*;
 
 public class NodeGraph implements Serializable {
-    //this would just be a list of every node.
+
     List<Edge> solution = new ArrayList<>();
-    Set<Node> visited = new HashSet<>();
-    Map<Node, Edge> precedenceMap = new HashMap<>();
+    transient Set<Node> visited = new HashSet<>();
+    transient Map<Node, Edge> precedenceMap = new HashMap<>();
 
-    //my head is swimming with what level of abstraction/implementation to use
-    //do i use a list of all nodes? do i stick to using an array?
-
-    //what's the benefits?
 
     int yDimension;
     int xDimension;
-    private Node[][] grid;
+    private final Node[][] grid;
 
     public NodeGraph(int[] dimension) {
         Set<Node> visited = new HashSet<>();
@@ -24,7 +20,6 @@ public class NodeGraph implements Serializable {
         xDimension = dimension[1];
         int nodeXDimension = (xDimension - 1) / 2;
         int nodeYDimension = (yDimension - 1) / 2;
-        int nodeCount = nodeXDimension * nodeYDimension;
 
         grid = new Node[nodeYDimension][nodeXDimension];
         for (int y = 0; y < grid.length; y++) {
@@ -195,14 +190,6 @@ public class NodeGraph implements Serializable {
             mazeArray[dir[0]][dir[1]] = 2;
         }
         return mazeArray;
-//        boolean[][] mazeArray = new boolean[grid.length][grid[0].length];
-//        for (int y = 0; y < mazeArray.length; y++) {
-//            for (int x = 0; x < mazeArray[0].length; x++) {
-//                Node node = getNode(y, x);
-//                System.out.println(node.toString());
-//            }
-//        }
-//        return mazeArray;
     }
 
     /**

@@ -1,30 +1,10 @@
 package maze;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserInputHandler {
     static final Scanner SCANNER = new Scanner(System.in);
 
-
-    public int[] askDimensions() {
-        System.out.println("Please, enter the size of a maze, \"y x\" eg. 8 8 for 8x8");
-        while (true) {
-            String input = SCANNER.nextLine();
-            input.split(" ");
-            int[] dimensions;
-            try {
-                dimensions = Arrays.stream(input.split(" ")).mapToInt(Integer::parseInt).toArray();
-                if (dimensions[0] < 3 || dimensions[1] < 3) {
-                    throw new RuntimeException("Must be greater than 3");
-                }
-                return dimensions;
-            } catch (Exception e) {
-                System.out.println("Error, wrong input format");
-                throw e;
-            }
-        }
-    }
 
     public int askDimension() {
         System.out.println("Please, enter the size of a maze");
@@ -47,16 +27,18 @@ public class UserInputHandler {
 
     public CommandType askMenu() throws RuntimeException {
         boolean mazeExists = Main.maze != null;
-        System.out.println("=== Menu ===\n" +
-                           "1. Generate a new maze\n" +
-                           "2. Load a maze");
+        System.out.println("""
+                === Menu ===
+                1. Generate a new maze
+                2. Load a maze""");
         if (mazeExists) {
-            System.out.println("3. Save the maze\n" +
-                               "4. Display the maze\n" +
-                               "5. Find the escape");
+            System.out.println("""
+                    3. Save the maze
+                    4. Display the maze
+                    5. Find the escape""");
         }
         System.out.println("0. Exit");
-        CommandType cmd = null;
+        CommandType cmd;
         try {
             cmd = CommandType.values()[Integer.parseInt(SCANNER.nextLine())];
             if ((cmd.equals(CommandType.DISPLAY) || cmd.equals(CommandType.SAVE)) && !mazeExists) {

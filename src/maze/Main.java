@@ -2,10 +2,7 @@ package maze;
 
 import util.SerializationUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
 
 public class Main {
     static UserInputHandler userInput = new UserInputHandler();
@@ -43,9 +40,7 @@ public class Main {
                     }
                 }
                 case DISPLAY -> maze.print(false);
-                case FIND -> {
-                    maze.print(true);
-                }
+                case FIND -> maze.print(true);
             }
             System.out.println();
         }

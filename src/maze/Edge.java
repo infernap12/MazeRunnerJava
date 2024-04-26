@@ -13,7 +13,7 @@ public class Edge implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Edge{");
+        final StringBuilder sb = new StringBuilder("Edge{");
         sb.append("node=").append(node);
         sb.append(", offset=");
         if (offset == null) sb.append("null");
